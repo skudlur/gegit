@@ -1,2 +1,2 @@
-# gg
-gg -> Get your Git repositories from a terminal command
+# gegit
+gegit -> Get your Git repositories from a terminal command
