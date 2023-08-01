@@ -1,7 +1,13 @@
 [package]
 name = "gegit"
-version = "0.1.0"
+version = "1.0.0"
 edition = "2021"
+author = ["Suhas Kudlur Viswanath <suhaskv0111@gmail.com>"]
+description = "Getting your repos made easy"
+readme = "README.md"
+homepage = "https://github.com/skudlur/gegit"
+repository = "https://github.com/skudlur/gegit"
+keywords = ["cli", "git"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
