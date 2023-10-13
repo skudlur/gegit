@@ -14,6 +14,8 @@ use std::process::{Command, Stdio};
 struct Args {
     /// Name of the repo your need
     repo: String,
+    /// Owner of the repo you need to clone (Optional)
+    owner: Option<String>,
 
     /// Name of the host
     host: Option<String>,
@@ -36,7 +38,6 @@ fn main() {
     // Insert repo name as key with info vector as value
     info_map.insert(&args.repo, info_vec);
 
-
     if !is_ssh_setup() {
         println!("SSH is not set up.");
         println!("Please set up SSH and try again.");
@@ -49,20 +50,17 @@ fn main() {
 
     git_uname.arg("config").arg("--global").arg("user.name");
 
-    let git_uname = git_uname.stdout(Stdio::piped())
-        .output()
-        .unwrap();
+    let git_uname = git_uname.stdout(Stdio::piped()).output().unwrap();
 
     let mut stdout = String::from_utf8(git_uname.stdout).unwrap();
-
     stdout.pop();
 
     // Git pull your repo
     let git_ssh_com: String = "git@github.com:".to_string();
     let repo: String = args.repo.to_string();
+    let owner: String = args.owner.unwrap_or_else(|| stdout.clone());
 
-    let final_com = format!("{}{}/{}.git", git_ssh_com, stdout, repo);
-
+    let final_com = format!("{}{}/{}.git", git_ssh_com, owner, repo);
     let mut gegit_com = Command::new("git");
 
     gegit_com.arg("clone").arg(final_com);
