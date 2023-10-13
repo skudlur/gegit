@@ -36,6 +36,14 @@ fn main() {
     // Insert repo name as key with info vector as value
     info_map.insert(&args.repo, info_vec);
 
+
+    if !is_ssh_setup() {
+        println!("SSH is not set up.");
+        println!("Please set up SSH and try again.");
+        println!("See https://docs.github.com/en/github/authenticating-to-github/connecting-to-github-with-ssh for more info.");
+        std::process::exit(1);
+    }
+
     // Git uname fetch
     let mut git_uname = Command::new("git");
 
@@ -59,4 +67,20 @@ fn main() {
 
     gegit_com.arg("clone").arg(final_com);
     gegit_com.output().unwrap();
+}
+
+fn is_ssh_setup() -> bool {
+    let output = Command::new("ssh")
+        .arg("-T")
+        .arg("git@github.com")
+        .output()
+        .expect("Failed to execute command");
+
+    // if error code is 1, ssh is set up
+    // if error code is 255, ssh is not set up
+    if output.status.code().unwrap() == 1 {
+        return true;
+    } else {
+        return false;
+    }
 }
