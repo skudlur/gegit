@@ -65,6 +65,21 @@ fn main() {
 
     gegit_com.arg("clone").arg(final_com);
     gegit_com.output().unwrap();
+    
+    let (command, arg) = if cfg!(target_os = "windows") {
+        ("dir", "/B")
+    } else {
+        ("ls", "")
+    };
+
+    let op = Command::new(command).arg(arg).output().unwrap();
+
+    if op.status.success() {
+        println!("Repo {} cloned successfully", repo);
+    } else {
+        println!("Check if repo name and branch name are correct");
+    }
+
 }
 
 fn is_ssh_setup() -> bool {
